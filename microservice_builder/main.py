@@ -1,4 +1,3 @@
-import subprocess
 from colorama import init as colorama_init
 import ui_module as ui
 import execute_module as exec
