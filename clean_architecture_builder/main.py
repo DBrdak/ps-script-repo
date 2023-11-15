@@ -15,5 +15,5 @@ while True:
   except SystemExit:
      break
   except Exception as e:
-    print(Fore.RED + e)
+    print(Fore.RED + str(e))
     continue

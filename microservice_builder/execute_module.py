@@ -17,8 +17,10 @@ def consume_answers(sln_name, services, libs, is_apigw_required, is_identity_ser
         factory.create_service(sln_name, service["name"], service["architecture"])
         
     if(len(libs) > 0):
+        factory.create_library_directory()
         for lib in libs:
             factory.create_library(sln_name, lib["name"])
+        os.chdir("../..")
 
     if(is_apigw_required):
         factory.create_api_gw(sln_name)

@@ -28,16 +28,16 @@ def apply_clean_architecture_project_hierarchy(sln_name, service_name):
     subprocess.run(["dotnet", "add", f"{service_name}.Infrastructure", "reference", f"{service_name}.Application"], stdout=subprocess.DEVNULL, shell=False)
     subprocess.run(["dotnet", "add", f"{service_name}.API", "reference", f"{service_name}.Application"], stdout=subprocess.DEVNULL, shell=False)
 
-def create_library(sln_name, lib_name): 
-    print(f"Creating library {lib_name}...")
-
+def create_library_directory():
     os.chdir("src")
     os.mkdir("Shared")
     os.chdir("Shared")
+
+def create_library(sln_name, lib_name): 
+    print(f"Creating library {lib_name}...")
+
     subprocess.run(["dotnet", "new", "classlib", "-n", f"{lib_name}.Shared", "-f", "net7.0"], stdout=subprocess.DEVNULL, shell=False)    
     subprocess.run(["dotnet", "sln", f"../../{sln_name}.sln","add", f"{lib_name}.Shared/{lib_name}.Shared.csproj"], stdout=subprocess.DEVNULL, shell=False)
-
-    os.chdir("../..")
 
 def create_api_gw(sln_name):
     print("Creating Ocelot API Gateway...")
@@ -63,7 +63,7 @@ def create_identity_server(sln_name):
     os.chdir("../..")
 
 def create_tests(services, libs, identity_server_name):
-    print("Creating tests folder structure...")
+    print("Creating tests file structure...")
     os.mkdir("tests")
     os.chdir("tests")
     for service in services:
