@@ -1,15 +1,23 @@
 import re
-
 from colorama import Fore
-
-
+    
 def validated_input(text, valid_values):
-    result = input(text)
+    result = input('✅' + text)
 
     if result in valid_values or re.match(re.compile(valid_values), result):
         return result
     else:
         raise Exception("Invalid input!")
+    
+def get_github_username():
+    input = validated_input("Initialize React app? ([y]es/[n]o): ", ["y", "n"]).lower()
+
+    if input == "y":
+        print(Fore.YELLOW + "WARNING! You must pass username of currently logged github account, otherwise error will be thrown")
+        username = input("Github username: ")
+        return username
+    else:
+        return None
 
 proj_sln_name_pattern = r"^[a-zA-Z][a-zA-Z0-9_-]*$"
 
@@ -72,19 +80,19 @@ def display_user_interface():
           break
       
   # Get data about creating identity server
-  is_identity_server_required = validated_input("Add Identity Server? ([y]es/[n]o): ", ["y", "n"])
+  is_identity_server_required = validated_input("Add Identity Server? ([y]es/[n]o): ", ["y", "n"]).lower() == "y"
 
   # Get data about creating api gateway
-  is_apigw_required = validated_input("Add Ocelot API Gateway? ([y]es/[n]o): ", ["y", "n"])
+  is_apigw_required = validated_input("Add Ocelot API Gateway? ([y]es/[n]o): ", ["y", "n"]).lower() == "y"
 
   # Get data about tests
-  is_test_dir_at_init = validated_input("Initialize tests direction at init? ([y]es/[n]o): ", ["y", "n"])
+  is_test_dir_at_init = validated_input("Initialize tests direction at init? ([y]es/[n]o): ", ["y", "n"]).lower() == "y"
 
   # Get data about client side
-  is_client_at_init = validated_input("Initialize React app? ([y]es/[n]o): ", ["y", "n"])
+  is_client_at_init = validated_input("Initialize React app? ([y]es/[n]o): ", ["y", "n"]).lower() == "y"
 
   #Get data about git
-  is_git_at_init = validated_input("Create Git repo? ([y]es/[n]o): ", ["y", "n"])
+  gh_username = len(get_github_username()) > 0
 
   return {"sln_name": sln_name, 
           "services": services, 
@@ -93,4 +101,4 @@ def display_user_interface():
           "is_apigw_required": is_apigw_required, 
           "is_test_dir_at_init": is_test_dir_at_init, 
           "is_client_at_init": is_client_at_init, 
-          "is_git_at_init": is_git_at_init}
+          "gh_username": gh_username}

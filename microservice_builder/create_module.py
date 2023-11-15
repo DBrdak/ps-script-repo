@@ -68,12 +68,15 @@ def create_tests(services, libs, identity_server_name):
     os.chdir("tests")
     for service in services:
         os.mkdir(f"{service["name"]}.Tests")
+        subprocess.run(["dotnet", "new", "xunit", "-n", f"{service["name"]}.Tests", "-f", "net7.0"], stdout=subprocess.DEVNULL, shell=False)
     
     for lib in libs:
-        os.mkdir(f"{lib["name"].Tests}")
+        os.mkdir(f"{lib["name"]}.Tests")
+        subprocess.run(["dotnet", "new", "xunit", "-n", f"{lib["name"]}.Tests", "-f", "net7.0"], stdout=subprocess.DEVNULL, shell=False)
 
     if(len(identity_server_name) > 0):
         os.mkdir(f"{identity_server_name}.Tests")
+        subprocess.run(["dotnet", "new", "xunit", "-n", f"{identity_server_name}.Tests", "-f", "net7.0"], stdout=subprocess.DEVNULL, shell=False)
 
     os.chdir("..")
 
@@ -85,29 +88,4 @@ def create_client_app(client_app_name):
     print("Installing node modules...")
     subprocess.run(["npx", "create-react-app", f"{client_app_name}"], stdout=subprocess.DEVNULL, shell=True)
     print(Fore.GREEN + "Client app created!")
-    os.chdir("../..")
-
-def create_git_repo(repo_name, client_app_name):
-    username="DBrdak"
-
-    print("Creating Git repo...")
-    subprocess.run(["dotnet", "new", "gitignore"], stdout=subprocess.DEVNULL, shell=False)
-    print("Adding current directory...")
-    subprocess.run(["git", "init", "-b", "master"], stdout=subprocess.DEVNULL, shell=False)
-    subprocess.run(["git", "add", "."], stdout=subprocess.DEVNULL, shell=False)
-    print("Commiting changes...")
-    subprocess.run(["git", "commit", "-m", "Initial commit"], stdout=subprocess.DEVNULL, shell=False)
-    #TODO Login feature 
-    print("Pushing repo to Github")
-    subprocess.run(["gh", "repo", "create", f"{repo_name}", "--private"], stdout=subprocess.DEVNULL, shell=False)
-    subprocess.run(["git", "remote", "add", "github", f"https://github.com/{username}/{repo_name}.git"], stdout=subprocess.DEVNULL, shell=False)
-    subprocess.run(["git", "push", "-u", "github", "master"], stdout=subprocess.DEVNULL, shell=False)
-    subprocess.run(["git", "commit", "-m", "Initial commit"], stdout=subprocess.DEVNULL, shell=False)
-    print("Creating development branch...")
-    subprocess.run(["git", "checkout", "-b", "init-develop", "master"], stdout=subprocess.DEVNULL, shell=False)
-    subprocess.run(["git", "push", "github", "init-develop"], stdout=subprocess.DEVNULL, shell=False)
-    #if(len(client_app_name) > 0):
-    #    subprocess.run(["git", "submodule", "add", f"https://github.com/{username}/{repo_name}.git", f"src/ClientApp/{client_app_name}"], stdout=subprocess.DEVNULL, shell=False)
-    #    subprocess.run(["git", "add", "."], stdout=subprocess.DEVNULL, shell=False)
-    #    subprocess.run(["git", "commit", "-m", "client submodule add"], stdout=subprocess.DEVNULL, shell=False)
-    #    subprocess.run(["git", "push"], stdout=subprocess.DEVNULL, shell=False)
+    os.chdir("../..")   

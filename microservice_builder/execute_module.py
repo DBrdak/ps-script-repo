@@ -2,18 +2,15 @@ import os
 import subprocess
 import create_module as factory
 from colorama import Fore
+from github_repo_builder.main import create_git_repo
 
 
-def consume_answers(sln_name, services, libs, is_apigw_required, is_identity_server_required, is_client_at_init, is_test_dir_at_init, is_git_at_init):
-    
-    # Calling scripts for creating app
+def consume_answers(sln_name, services, libs, is_apigw_required, is_identity_server_required, is_client_at_init, is_test_dir_at_init, gh_username):
     print(Fore.GREEN + "Creating microservices application...")
     os.mkdir(f"{sln_name}")
     os.chdir(f"{sln_name}")
-    # Create solution
     subprocess.run(["dotnet", "new", "sln"], stdout=subprocess.DEVNULL, shell=False)
 
-    # Create project structure
     os.mkdir("src")
     os.mkdir("src/Services")
 
@@ -24,23 +21,20 @@ def consume_answers(sln_name, services, libs, is_apigw_required, is_identity_ser
         for lib in libs:
             factory.create_library(sln_name, lib["name"])
 
-    if(is_apigw_required == "y"):
+    if(is_apigw_required):
         factory.create_api_gw(sln_name)
 
-    if(is_identity_server_required == "y"):
+    if(is_identity_server_required):
         factory.create_identity_server(sln_name)
 
-    if(is_client_at_init == "y"):
+    if(is_client_at_init):
         factory.create_client_app(sln_name)
 
-    if(is_test_dir_at_init == "y"):
-        os.mkdir("tests")
+    if(is_test_dir_at_init):
+        factory.create_tests(services, libs, is_identity_server_required)
 
-    if(is_git_at_init == "y"):
-        if(is_client_at_init == "y"):
-            factory.create_git_repo(sln_name, sln_name)
-        else:
-            factory.create_git_repo(sln_name, None)
+    if(len(gh_username)):
+        factory.create_git_repo(sln_name, gh_username)
 
     print("Building solution...")
 

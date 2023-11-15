@@ -9,16 +9,16 @@ def create_project(sln_path, proj_name):
   if not os.path.isfile(sln_path):
     print(Fore.RED + "Solution not found")
     return
-  
-    print(f"Creating clean architecture project {proj_name}...")
 
-    os.mkdir(f"{proj_name}")
-    os.chdir(f"{proj_name}")
-    subprocess.run(["dotnet", "new", "web", "-n", f"{proj_name}.API", "-f", "net7.0"], stdout=subprocess.DEVNULL, shell=False)
-    subprocess.run(["dotnet", "sln", f"{sln_path}","add", f"{proj_name}.API/{proj_name}.API.csproj"], stdout=subprocess.DEVNULL, shell=False)
-    apply_clean_architecture_project_hierarchy(sln_path, proj_name)
-    os.chdir("..")
-    print(Fore.GREEN + "Project created successfully")
+  print(f"Creating clean architecture project {proj_name}...")
+
+  os.mkdir(f"{proj_name}")
+  os.chdir(f"{proj_name}")
+  subprocess.run(["dotnet", "new", "web", "-n", f"{proj_name}.API", "-f", "net7.0"], stdout=subprocess.DEVNULL, shell=False)
+  subprocess.run(["dotnet", "sln", f"{sln_path}","add", f"{proj_name}.API/{proj_name}.API.csproj"], stdout=subprocess.DEVNULL, shell=False)
+  apply_clean_architecture_project_hierarchy(sln_path, proj_name)
+  os.chdir("..")
+  print(Fore.GREEN + "Project created successfully")
 
 def apply_clean_architecture_project_hierarchy(sln_path, proj_name):        
     subprocess.run(["dotnet", "new", "classlib", "-n", f"{proj_name}.Application", "-f", "net7.0"], stdout=subprocess.DEVNULL, shell=False)

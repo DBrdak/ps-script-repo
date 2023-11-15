@@ -1,0 +1,44 @@
+function [name] {
+  param(
+    [string]$command
+  )
+
+  switch ($command) {
+        "microservices-init" {
+            Write-Host("Looking for scripts...")
+            $scriptPath = Get-ChildItem -Recurse -Filter "main.py" | Where-Object { $_.FullName -like "*microservice_builder*" } | ForEach-Object { $_.FullName }
+            if ($scriptPath) {
+                py $scriptPath
+            }
+            else {
+                Write-Error "Script not found"
+            }
+        }
+        "clean-architecture-init" {
+            Write-Host("Looking for scripts...")
+            $scriptPath = Get-ChildItem -Recurse -Filter "main.py" | Where-Object { $_.FullName -like "*clean_architecture_builder*" } | ForEach-Object { $_.FullName }
+            if ($scriptPath) {
+                py $scriptPath
+            }
+            else {
+                Write-Error "Script not found"
+            }
+        }
+        "github-repo-init" {
+            Write-Host("Looking for scripts...")
+            $scriptPath = Get-ChildItem -Recurse -Filter "main.py" | Where-Object { $_.FullName -like "*github_repo_builder*" } | ForEach-Object { $_.FullName }
+            if ($scriptPath) {
+                py $scriptPath
+            }
+            else {
+                Write-Error "Script not found"
+            }
+        }
+        default {
+            Write-Error "Command not recognized: $command"
+        }
+    }
+}
+
+
+
