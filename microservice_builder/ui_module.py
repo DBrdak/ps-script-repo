@@ -10,7 +10,7 @@ def validated_input(text, valid_values):
         raise Exception("Invalid input!")
     
 def get_github_username():
-    input = validated_input("Initialize React app? ([y]es/[n]o): ", ["y", "n"]).lower()
+    input = validated_input("Initialize Github repository? ([y]es/[n]o): ", ["y", "n"]).lower()
 
     if input == "y":
         print(Fore.YELLOW + "WARNING! You must pass username of currently logged github account, otherwise error will be thrown")

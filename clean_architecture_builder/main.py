@@ -5,13 +5,6 @@ import keyboard
 import ui_module as ui
 import create_module as factory
 
-def on_esc_pressed(e):
-    if e.name == 'esc':
-        print("Exiting the application.")
-        raise SystemExit
-
-keyboard.hook(on_esc_pressed)
-
 colorama_init(autoreset=True)
 
 while True:

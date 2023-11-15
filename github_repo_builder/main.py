@@ -1,30 +1,24 @@
 import os
+import re
 import subprocess
 import sys
 import keyboard
 from colorama import Fore, init as colorama_init
     
 def validated_input(text, valid_values):
-    result = input('✅' + text)
+    result = input('✅ ' + text)
 
     if result in valid_values or re.match(re.compile(valid_values), result):
         return result
     else:
         raise Exception("Invalid input!")
-    
-def on_esc_pressed(e):
-    if e.name == 'esc':
-        print("Exiting the application.")
-        raise SystemExit
-
-keyboard.hook(on_esc_pressed)
 
 colorama_init(autoreset=True)
 
 repo_name_pattern = r"^[a-zA-Z][a-zA-Z0-9_-]*$"
 
 def get_github_username():
-    input = shared.validated_input("Initialize React app? ([y]es/[n]o): ", ["y", "n"]).lower()
+    input = validated_input("Initialize React app? ([y]es/[n]o): ", ["y", "n"]).lower()
 
     print(Fore.YELLOW + "WARNING! You must pass username of currently logged github account, otherwise error will be thrown")
     username = input("Github username: ")
@@ -52,3 +46,7 @@ current_working_directory = os.getcwd()
 print(Fore.BLUE + f"Running github repo creator for directory: {current_working_directory}")
 print(Fore.YELLOW + f"WARNING! Repository will be created with .NET support")
 repo_name = validated_input("Repository name: ", repo_name_pattern)
+print(Fore.YELLOW + "WARNING! You must pass username of currently logged github account, otherwise error will be thrown")
+username = input("✅ Github username: ")
+
+create_git_repo(repo_name, username)

@@ -2,7 +2,6 @@ import os
 import subprocess
 import create_module as factory
 from colorama import Fore
-from github_repo_builder.main import create_git_repo
 
 
 def consume_answers(sln_name, services, libs, is_apigw_required, is_identity_server_required, is_client_at_init, is_test_dir_at_init, gh_username):

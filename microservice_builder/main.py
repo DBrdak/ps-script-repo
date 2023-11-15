@@ -1,4 +1,3 @@
-import sys
 from colorama import Fore, init as colorama_init
 import keyboard
 import ui_module as ui
@@ -30,5 +29,5 @@ while True:
   except SystemExit:
      break
   except Exception as e:
-    print(Fore.RED + e)
+    print(Fore.RED + e.__str__)
     continue

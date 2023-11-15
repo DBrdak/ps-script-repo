@@ -20,7 +20,7 @@ def display_user_interface():
 
   current_working_directory = os.getcwd().__str__()
 
-  sln_relative_path = prompt(f"Current working directory (Your project will be created here): {current_working_directory}\n> ", completer=PathCompleter())
+  sln_relative_path = prompt(f"Current working directory (Your project will be created here): {current_working_directory}\n✅ Solution file path:  ", completer=PathCompleter())
 
   sln_path = os.path.join(current_working_directory, sln_relative_path)
 
