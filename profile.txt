@@ -1,41 +1,78 @@
-function [name] {
-  param(
-    [string]$command
-  )
+function dbrdak {
+    param(
+        [string]$command
+    )
 
-  switch ($command) {
+    switch ($command) {
         "microservices-init" {
             Write-Host("Looking for scripts...")
-            $scriptPath = Get-ChildItem -Recurse -Filter "main.py" | Where-Object { $_.FullName -like "*microservice_builder*" } | ForEach-Object { $_.FullName }
-            if ($scriptPath) {
-                py $scriptPath
-            }
-            else {
-                Write-Error "Script not found"
+            $drives = Get-PSDrive -PSProvider FileSystem | Sort-Object @{Expression = { if($_.Root -eq 'C:\') { 1 } else { 0 } }}
+            foreach ($drive in $drives) {
+                $scriptPath = Get-ChildItem -Recurse -Filter "main.py" -Path $drive.Root -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*microservice_builder*" } | ForEach-Object { $_.FullName }
+                if ($scriptPath) {
+                    py $scriptPath
+                    break
+                }
+                else {
+                    Write-Error "Script not found on root $drive"
+                }
             }
         }
         "clean-architecture-init" {
             Write-Host("Looking for scripts...")
-            $scriptPath = Get-ChildItem -Recurse -Filter "main.py" | Where-Object { $_.FullName -like "*clean_architecture_builder*" } | ForEach-Object { $_.FullName }
-            if ($scriptPath) {
-                py $scriptPath
-            }
-            else {
-                Write-Error "Script not found"
+            $drives = Get-PSDrive -PSProvider FileSystem | Sort-Object @{Expression = { if($_.Root -eq 'C:\') { 1 } else { 0 } }}
+            foreach ($drive in $drives) {
+                $scriptPath = Get-ChildItem -Recurse -Filter "main.py" -Path $drive.Root -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*clean_architecture_builder*" } | ForEach-Object { $_.FullName }
+                if ($scriptPath) {
+                    py $scriptPath
+                    break
+                }
+                else {
+                    Write-Error "Script not found on root $drive"
+                }
             }
         }
-        "github-repo-init" {
+        "gh-init" {
             Write-Host("Looking for scripts...")
-            $scriptPath = Get-ChildItem -Recurse -Filter "main.py" | Where-Object { $_.FullName -like "*github_repo_builder*" } | ForEach-Object { $_.FullName }
-            if ($scriptPath) {
-                py $scriptPath
+            $drives = Get-PSDrive -PSProvider FileSystem | Sort-Object @{Expression = { if($_.Root -eq 'C:\') { 1 } else { 0 } }}
+            foreach ($drive in $drives) {
+                $scriptPath = Get-ChildItem -Recurse -Filter "main.py" -Path $drive.Root -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*github_repo_builder*" } | ForEach-Object { $_.FullName }
+                if ($scriptPath) {
+                    py $scriptPath
+                    break
+                }
+                else {
+                    Write-Error "Script not found on root $drive"
+                }
             }
-            else {
-                Write-Error "Script not found"
+        }
+        "docker-compose-run" {
+
+            if(!(Test-Path "./docker-compose.yml") -and !(Test-Path "./docker-compose.override.yml")) {
+                Write-Error "File not exist: docker-compose.yml or/and docker-compose.override.yml file does not exist in current location"
+            } else {
+                & docker-compose down
+                & docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build -d
+            }
+        }
+        "list" {
+            $commands = @{
+                "microservices-init"        = "Creates microservices application with specific file structure (.NET)"
+                "clean-architecture-init"   = "Creates Clean Architecture project in given solution on current working directory (.NET)"
+                "gh-init"                   = "Creates Git repository with develop-init branch and then pushes it to Github (.NET)"
+                "docker-compose-run"        = "Running docker-compose in current location and killing one which is currently running (Docker)"
+                "list"                      = "Display all available commands"
+            }
+            
+            Write-Host "Available Commands:"
+            foreach ($command in $commands.Keys) {
+                $description = $commands[$command]
+                Write-Host "-> $command : $description"
             }
         }
         default {
             Write-Error "Command not recognized: $command"
+            Invoke-Expression "dbrdak list"
         }
     }
 }

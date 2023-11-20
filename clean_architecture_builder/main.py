@@ -12,8 +12,6 @@ while True:
     answers = ui.display_user_interface()
     factory.create_project(answers["sln_path"], answers["proj_name"])
     break
-  except SystemExit:
-     break
   except Exception as e:
     print(Fore.RED + str(e))
     continue
