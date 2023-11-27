@@ -11,12 +11,10 @@ function dbrdak {
                 $scriptPath = Get-ChildItem -Recurse -Filter "main.py" -Path $drive.Root -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*microservice_builder*" } | ForEach-Object { $_.FullName }
                 if ($scriptPath) {
                     py $scriptPath
-                    break
-                }
-                else {
-                    Write-Error "Script not found on root $drive"
+                    return
                 }
             }
+            Write-Error "Script not found"
         }
         "clean-architecture-init" {
             Write-Host("Looking for scripts...")
@@ -25,12 +23,10 @@ function dbrdak {
                 $scriptPath = Get-ChildItem -Recurse -Filter "main.py" -Path $drive.Root -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*clean_architecture_builder*" } | ForEach-Object { $_.FullName }
                 if ($scriptPath) {
                     py $scriptPath
-                    break
-                }
-                else {
-                    Write-Error "Script not found on root $drive"
+                    return
                 }
             }
+            Write-Error "Script not found"
         }
         "gh-init" {
             Write-Host("Looking for scripts...")
@@ -39,15 +35,12 @@ function dbrdak {
                 $scriptPath = Get-ChildItem -Recurse -Filter "main.py" -Path $drive.Root -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*github_repo_builder*" } | ForEach-Object { $_.FullName }
                 if ($scriptPath) {
                     py $scriptPath
-                    break
-                }
-                else {
-                    Write-Error "Script not found on root $drive"
+                    return
                 }
             }
+            Write-Error "Script not found"
         }
         "docker-compose-run" {
-
             if(!(Test-Path "./docker-compose.yml") -and !(Test-Path "./docker-compose.override.yml")) {
                 Write-Error "File not exist: docker-compose.yml or/and docker-compose.override.yml file does not exist in current location"
             } else {
