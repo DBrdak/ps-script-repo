@@ -1,0 +1,10 @@
+{
+  "short_name": "Adjust me!",
+  "name": "Adjust me!",
+  "icons": [
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
