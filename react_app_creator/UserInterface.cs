@@ -53,20 +53,12 @@ namespace react_app_creator
 
             settings.InstallPackages();
 
-            PrintSuccess("Packages successfully installed!\u2705\nYour app is ready!");
+            PrintSuccess("Packages successfully installed!\nYour app is ready! ✅");
         }
 
 
 
-        private static bool GetGitInfo(string? gitAnswer)
-        {
-            var isGitEnabled = gitAnswer == "y" ||
-                               (gitAnswer == "n" ?
-                                   false :
-                                   throw new ArgumentException($"Answer {gitAnswer} is invalid"));
-
-            return isGitEnabled;
-        }
+        private static bool GetGitInfo(string? gitAnswer) => gitAnswer != "n";
 
         private static Package? DisplayMenu()
         {

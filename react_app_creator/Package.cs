@@ -22,44 +22,44 @@ namespace react_app_creator
         // ReSharper disable once InconsistentNaming
         public static readonly Package MaterialUI = new(1, "MaterialUI", new []
         {
-            "@emotion/react",
-            "@emotion/styled",
-            "@fontsource/roboto",
-            "@mui/icons-material",
-            "@mui/lab",
-            "@mui/material",
-            "@mui/styles",
-            "@mui/x-date-pickers"
+            "@emotion/react@latest",
+            "@emotion/styled@latest",
+            "@fontsource/roboto@latest",
+            "@mui/icons-material@latest",
+            "@mui/lab@latest",
+            "@mui/material@latest",
+            "@mui/styles@latest",
+            "@mui/x-date-pickers@latest"
         });
         public static readonly Package ReactRouter = new(2, "ReactRouter", new []
         {
-            "react-router-dom",
+            "react-router-dom@latest",
         });
         public static readonly Package Formik = new(3, "Formik", new []
         {
-            "formik"
+            "formik@latest"
         });
         public static readonly Package Axios = new(4, "Axios" , new[]
         {
-            "axios"
+            "axios@latest"
         });
         public static readonly Package MobX = new(5, "MobX", new[]
         {
-            "mobx",
-            "mobx-react-lite"
+            "mobx@latest",
+            "mobx-react-lite@latest"
         });
         public static readonly Package Toastify = new(6, "Toastify", new[]
         {
-            "react-toastify"
+            "react-toastify@latest"
         });
         public static readonly Package Yup = new(7, "Yup", new[]
         {
-            "yup"
+            "yup@latest"
         });
         public static readonly Package Uuid = new(8, "Uuid" , new[]
         {
-            "uuid",
-            "@types/uuid"
+            "uuid@latest",
+            "@types/uuid@latest"
         });
 
         public static readonly IReadOnlyCollection<Package> All = new[]

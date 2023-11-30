@@ -17,6 +17,7 @@ namespace react_app_creator
                 catch
                 {
                     UserInterface.PrintError();
+                    break;
                 }
             }
             while (true);

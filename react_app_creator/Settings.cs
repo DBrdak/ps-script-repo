@@ -26,26 +26,26 @@ namespace react_app_creator
             var i = processPath!.IndexOf(@"\bin\Debug\net7.0\react_app_creator.exe", StringComparison.Ordinal);
             var pathToBasicFiles = processPath[..i] + @"\BasicFiles\";
 
-            Cmd.Execute($@"Copy-Item -Path {pathToBasicFiles}\App.tsx -Destination ./{AppName}/src/App.tsx -Force");
-            Cmd.Execute($@"Copy-Item -Path {pathToBasicFiles}\tsconfig.json -Destination ./{AppName}/tsconfig.json -Force");
-            Cmd.Execute($@"Copy-Item -Path {pathToBasicFiles}\index.html -Destination ./{AppName}/public/index.html -Force");
-            Cmd.Execute($@"Copy-Item -Path {pathToBasicFiles}\manifest.json -Destination ./{AppName}/public/manifest.json -Force");
+            Cmd.Execute($@"copy /Y {pathToBasicFiles}\App.tsx .\{AppName}\src\App.tsx");
+            Cmd.Execute($@"copy /Y {pathToBasicFiles}\tsconfig.json .\{AppName}\tsconfig.json");
+            Cmd.Execute($@"copy /Y {pathToBasicFiles}\index.html .\{AppName}\public\index.html");
+            Cmd.Execute($@"copy /Y {pathToBasicFiles}\manifest.json .\{AppName}\public\manifest.json");
         }
 
         private void RemoveUnnecessaryFiles()
         {
-            Cmd.Execute($"rm ./{AppName}/src/setupTests.ts");
-            Cmd.Execute($"rm ./{AppName}/src/logo.svg");
-            Cmd.Execute($"rm ./{AppName}/src/App.test.tsx");
-            Cmd.Execute($"rm ./{AppName}/src/App.css");
-            Cmd.Execute($"rm ./{AppName}/public/favicon.ico");
-            Cmd.Execute($"rm ./{AppName}/public/logo192.png");
-            Cmd.Execute($"rm ./{AppName}/public/logo512.png");
+            Cmd.Execute($@"del .\{AppName}\src\setupTests.ts");
+            Cmd.Execute($@"del .\{AppName}\src\logo.svg");
+            Cmd.Execute($@"del .\{AppName}\src\App.test.tsx");
+            Cmd.Execute($@"del .\{AppName}\src\App.css");
+            Cmd.Execute($@"del .\{AppName}\public\favicon.ico");
+            Cmd.Execute($@"del .\{AppName}\public\logo192.png");
+            Cmd.Execute($@"del .\{AppName}\public\logo512.png");
 
             if (IsGithubRequired) return;
 
-            Cmd.Execute($"rm ./{AppName}/README.md");
-            Cmd.Execute($"rm ./{AppName}/.gitignore");
+            Cmd.Execute($@"del .\{AppName}\README.md");
+            Cmd.Execute($@"del .\{AppName}\.gitignore");
         }
 
         public Settings(string appName)
@@ -84,7 +84,7 @@ namespace react_app_creator
 
             Console.WriteLine($"{string.Join(" ", _packages.SelectMany(p => p.NodeNames))}");
 
-            Cmd.Execute($"npm install {string.Join(" ", _packages.SelectMany(p => p.NodeNames))}");
+            Cmd.Execute($"npm install {string.Join(" ", string.Concat(_packages.SelectMany(p => p.NodeNames)), " --force")}", $"./{AppName}");
         }
     }
 }
