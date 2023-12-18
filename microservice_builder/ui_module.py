@@ -11,9 +11,9 @@ def validated_input(text, valid_values):
         raise Exception("Invalid input!")
     
 def get_github_username():
-    input = validated_input("Initialize Github repository? ([y]es/[n]o): ", ["y", "n"]).lower()
+    answer = validated_input("Initialize Github repository? ([y]es/[n]o): ", ["y", "n"]).lower()
 
-    if input == "y":
+    if answer == "y":
         print(Fore.YELLOW + "WARNING! You must pass username of currently logged github account, otherwise error will be thrown")
         username = input("Github username: ")
         return username
@@ -84,13 +84,13 @@ def display_user_interface():
     is_apigw_required = validated_input("Add Ocelot API Gateway? ([y]es/[n]o): ", ["y", "n"]).lower() == "y"
 
     # Get data about tests
-    is_test_dir_at_init = validated_input("Initialize tests direction at init? ([y]es/[n]o): ", ["y", "n"]).lower() == "y"
+    is_test_dir_at_init = validated_input("Initialize tests directory at init? ([y]es/[n]o): ", ["y", "n"]).lower() == "y"
 
     # Get data about client side
     is_client_at_init = validated_input("Initialize React app? ([y]es/[n]o): ", ["y", "n"]).lower() == "y"
 
     #Get data about git
-    gh_username = len(get_github_username()) > 0
+    gh_username = get_github_username()
 
     return {"sln_name": sln_name, 
             "services": services, 

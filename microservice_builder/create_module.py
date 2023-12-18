@@ -62,7 +62,7 @@ def create_identity_server(sln_name):
     subprocess.run(["dotnet", "sln", f"../../{sln_name}.sln","add", f"IdentityServer/IdentityServer.csproj"], stdout=subprocess.DEVNULL, shell=False)
     os.chdir("../..")
 
-def create_tests(services, libs, identity_server_name):
+def create_tests(services, libs, is_identity_server_exists):
     print("Creating tests file structure...")
     os.mkdir("tests")
     os.chdir("tests")
@@ -74,9 +74,9 @@ def create_tests(services, libs, identity_server_name):
         os.mkdir(f"{lib["name"]}.Tests")
         subprocess.run(["dotnet", "new", "xunit", "-n", f"{lib["name"]}.Tests", "-f", "net7.0"], stdout=subprocess.DEVNULL, shell=False)
 
-    if(len(identity_server_name) > 0):
-        os.mkdir(f"{identity_server_name}.Tests")
-        subprocess.run(["dotnet", "new", "xunit", "-n", f"{identity_server_name}.Tests", "-f", "net7.0"], stdout=subprocess.DEVNULL, shell=False)
+    if(is_identity_server_exists):
+        os.mkdir(f"IdentityServer.Tests")
+        subprocess.run(["dotnet", "new", "xunit", "-n", f"IdentityServer.Tests", "-f", "net7.0"], stdout=subprocess.DEVNULL, shell=False)
 
     os.chdir("..")
 

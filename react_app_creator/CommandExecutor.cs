@@ -26,6 +26,9 @@ namespace react_app_creator
             process.Start();
             process.WaitForExit();
 
+            Console.WriteLine(process.StandardOutput.ReadToEnd());
+            Console.WriteLine(process.StandardError.ReadToEnd());
+
             process.Kill();
             process.Dispose();
         }
