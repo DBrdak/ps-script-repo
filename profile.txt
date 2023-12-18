@@ -3,10 +3,21 @@ function dbrdak {
         [string]$command
     )
 
+    # If you know path of MyScripts repository, define it here. Otherwise, use empty string and scripts will be found automatically
+    $customPath = "D:\Programownie\Projekty\MyScripts"
+    #$customPath = ""
+    $drives = Get-PSDrive -PSProvider FileSystem | Sort-Object @{Expression = { if($_.Root -eq 'C:\') { 1 } else { 0 } }}
+
     switch ($command) {
         "microservices-init" {
             Write-Host("Looking for scripts...")
-            $drives = Get-PSDrive -PSProvider FileSystem | Sort-Object @{Expression = { if($_.Root -eq 'C:\') { 1 } else { 0 } }}
+            if($customPath.Length -gt 0) {
+                $scriptPath = Get-ChildItem -Recurse -Filter "main.py" -Path $customPath -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*microservice_builder*" } | ForEach-Object { $_.FullName }
+                if ($scriptPath) {
+                    py $scriptPath
+                    return
+                }
+            }
             foreach ($drive in $drives) {
                 $scriptPath = Get-ChildItem -Recurse -Filter "main.py" -Path $drive.Root -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*microservice_builder*" } | ForEach-Object { $_.FullName }
                 if ($scriptPath) {
@@ -18,7 +29,13 @@ function dbrdak {
         }
         "clean-architecture-init" {
             Write-Host("Looking for scripts...")
-            $drives = Get-PSDrive -PSProvider FileSystem | Sort-Object @{Expression = { if($_.Root -eq 'C:\') { 1 } else { 0 } }}
+            if($customPath.Length -gt 0) {
+                $scriptPath = Get-ChildItem -Recurse -Filter "main.py" -Path $customPath -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*clean_architecture_builder*" } | ForEach-Object { $_.FullName }
+                if ($scriptPath) {
+                    py $scriptPath
+                    return
+                }
+            }
             foreach ($drive in $drives) {
                 $scriptPath = Get-ChildItem -Recurse -Filter "main.py" -Path $drive.Root -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*clean_architecture_builder*" } | ForEach-Object { $_.FullName }
                 if ($scriptPath) {
@@ -30,7 +47,13 @@ function dbrdak {
         }
         "gh-init" {
             Write-Host("Looking for scripts...")
-            $drives = Get-PSDrive -PSProvider FileSystem | Sort-Object @{Expression = { if($_.Root -eq 'C:\') { 1 } else { 0 } }}
+            if($customPath.Length -gt 0){
+                $scriptPath = Get-ChildItem -Recurse -Filter "main.py" -Path $customPath -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*github_repo_builder*" } | ForEach-Object { $_.FullName }
+                if ($scriptPath) {
+                    py $scriptPath
+                    return
+                }
+            }
             foreach ($drive in $drives) {
                 $scriptPath = Get-ChildItem -Recurse -Filter "main.py" -Path $drive.Root -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*github_repo_builder*" } | ForEach-Object { $_.FullName }
                 if ($scriptPath) {
@@ -48,19 +71,40 @@ function dbrdak {
                 & docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build -d
             }
         }
+        "react-init" {
+            Write-Host("Looking for scripts...")
+            if($customPath.Length -gt 0) {
+                $scriptPath = Get-ChildItem -Recurse -Filter "react_app_creator.csproj" -Path $customPath -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*react_app_creator*" } | ForEach-Object { $_.FullName }
+                if ($scriptPath) {
+                    dotnet run --project $scriptPath
+                    return
+                }
+            }
+            foreach ($drive in $drives) {
+                $scriptPath = Get-ChildItem -Recurse -Filter "react_app_creator.csproj" -Path $drive.Root -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*react_app_creator*" } | ForEach-Object { $_.FullName }
+                if ($scriptPath) {
+                    dotnet run --project $scriptPath
+                    return
+                }
+            }
+            Write-Error "Script not found"
+        }
         "list" {
             $commands = @{
                 "microservices-init"        = "Creates microservices application with specific file structure (.NET)"
                 "clean-architecture-init"   = "Creates Clean Architecture project in given solution on current working directory (.NET)"
                 "gh-init"                   = "Creates Git repository with develop-init branch and then pushes it to Github (.NET)"
                 "docker-compose-run"        = "Running docker-compose in current location and killing one which is currently running (Docker)"
+                "react-init"                = "Creates new react app with adjusted file structure and optional most useful node packages, ready to code"
                 "list"                      = "Display all available commands"
             }
             
             Write-Host "Available Commands:"
             foreach ($command in $commands.Keys) {
                 $description = $commands[$command]
-                Write-Host "-> $command : $description"
+                Write-Host "-> " -NoNewline
+                Write-Host "$command" -NoNewline -ForegroundColor Green
+                Write-Host " - $description"
             }
         }
         default {
