@@ -82,8 +82,6 @@ namespace react_app_creator
                 return;
             }
 
-            Console.WriteLine($"{string.Join(" ", _packages.SelectMany(p => p.NodeNames))}");
-
             Cmd.Execute($"npm install {string.Join(" ", string.Concat(_packages.SelectMany(p => p.NodeNames)), " --force")}", $"./{AppName}");
         }
     }

@@ -32,7 +32,7 @@ def consume_answers(sln_name, services, libs, is_apigw_required, is_identity_ser
         factory.create_client_app(sln_name)
 
     if(is_test_dir_at_init):
-        factory.create_tests(services, libs, is_identity_server_required)
+        factory.create_tests(services, libs, is_identity_server_required, sln_name)
 
     if(len(gh_username) > 0):
         factory.create_git_repo(sln_name, gh_username)
