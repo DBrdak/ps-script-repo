@@ -22,13 +22,12 @@ namespace react_app_creator
         // ReSharper disable once InconsistentNaming
         public static readonly Package MaterialUI = new(1, "MaterialUI", new []
         {
+            "@mui/material@latest",
             "@emotion/react@latest",
             "@emotion/styled@latest",
             "@fontsource/roboto@latest",
             "@mui/icons-material@latest",
             "@mui/lab@latest",
-            "@mui/material@latest",
-            "@mui/styles@latest",
             "@mui/x-date-pickers@latest"
         });
         public static readonly Package ReactRouter = new(2, "ReactRouter", new []
