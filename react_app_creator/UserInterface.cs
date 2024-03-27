@@ -9,7 +9,7 @@ namespace react_app_creator
 {
     internal class UserInterface
     {
-        private const string nameRegex = "^[a-z-]{3,25}$";
+        private const string nameRegex = "^[A-Za-z-.]{3,25}$";
         private static int selectedOptionId = 1;
         private static int confirmedOptionId = 0;
 

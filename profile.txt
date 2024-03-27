@@ -89,6 +89,17 @@ function dbrdak {
             }
             Write-Error "Script not found"
         }
+        "open-webstorm" {
+            $directoryPath = $PWD.Path
+
+            $webstormExecutable = "C:\Users\Brdak\AppData\Local\JetBrains\Toolbox\apps\WebStorm\ch-0\231.8109.174\bin\webstorm64.exe"
+
+            if (Test-Path $webstormExecutable) {
+                Start-Process -FilePath $webstormExecutable -ArgumentList $directoryPath
+            } else {
+                Write-Host "WebStorm executable not found at $webstormExecutable"
+            }
+        }
         "list" {
             $commands = @{
                 "microservices-init"        = "Creates microservices application with specific file structure (.NET)"
@@ -96,6 +107,7 @@ function dbrdak {
                 "gh-init"                   = "Creates Git repository with develop-init branch and then pushes it to Github (.NET)"
                 "docker-compose-run"        = "Running docker-compose in current location and killing one which is currently running (Docker)"
                 "react-init"                = "Creates new react app with adjusted file structure and optional most useful node packages, ready to code"
+                "open-webstorm"             = "Open current directory with JetBrains WebStorm - modify the profile file to adjust your directory of WebStorm"
                 "list"                      = "Display all available commands"
             }
             
